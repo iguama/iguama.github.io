@@ -1,17 +1,18 @@
 # Redemption Platform
 
 ## Introduction
+
 Welcome to Iguama's Redemption Platform (from now on referred to as "The Platform") documentation. Our platform allows your customers to redeem their reward points in the digital merchant of their choice, in order to achieve that, there are some API requirements that need to be provided by any loyalty program interested in integrating our platform.
+
 ## Overall flow
-![Overall flow diagram](https://github.com/iguama/iguama.github.io/blob/master/media/1-overall.png)
 
 The overall process is composed of three steps:
 * Authentication
 * Redemption
 * Redemption Reversal
 
-
 ## Authentication
+
 The Plaform handles user authentication through OAuth2 authorization framework, so the authorization itself happens within the Loyalty program's website, The Platform interacts with loyalty program's technology to obtain the authorization grant needed to access the user's account. Further information about OAuth2 can be found [here](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2).
 
 The complete authentication process is described below:
@@ -105,7 +106,6 @@ member_id | String | User's id within the loyalty program's platform
 total | Integer | Total amount of reward points to redeem.
 description | String | Redemption's description.
 transaction | String | Our transaction id for reference.
-
 
 **Expected response**
 ```json
