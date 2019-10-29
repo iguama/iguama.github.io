@@ -3,7 +3,6 @@
 ## Introduction
 Welcome to Iguama's Redemption Platform (from now on referred to as "The Platform") documentation. Our platform allows your customers to redeem their reward points in the digital merchant of their choice, in order to achieve that, there are some API requirements that need to be provided by any loyalty program interested in integrating our platform.
 ## Overall flow
-![Overall flow diagram](https://github.com/iguama/iguama.github.io/blob/master/media/1-overall.png)
 
 The overall process is composed of three steps:
 * Authentication
