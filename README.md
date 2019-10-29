@@ -34,13 +34,36 @@ authorization_code | Yes | Authorization code needed to obtain the access token
 
 3. The Platform will request an access token from the Loyalty Program's API, by passing the authorization code along with authentication details, including the following information:
 
+Below is an example of the API call to obtain the access token with `grant_type=AUTHORIZATION_CODE`
+
+```bash
+curl -X POST \
+  https://api.loyaltyprogram.com/oauth/token \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"client_id": "$CLIENT_ID",
+	"client_secret": "$CLIENT_SECRET",
+	"grant_type": "AUTHORIZATION_CODE",
+	"code": "$CODE"
+}'
+```
+
 Field | Type | Description
 ----- | ---- | -----------
 client_id | String | The Platform's clientID (assigned by the loyalty program's platform)
 client_secret | String | The Platform's clientSecret (assigned by the loyalty program's platform)
+code | String | The authorization code received in the previous step
 grant_type | Enum (AUTHORIZATION_CODE, CLIENT_CREDENTIALS) | Specifies the grant_type used to request authorization, in this case, AUTHORIZATION_CODE will be sent.
 
-The response we expect from the API must contain at least:
+**Expected response**
+
+```json
+{
+    "access_token": "095240ff-d12a-4fd6-bc58-b16bac8e7bfd",
+    "refresh_token": "095240ff-d12a-4fd6-bc58-b16bac8e7bfd",
+    "expires_in": "3600000"
+}
+```
 
 Field | Type | Description
 ----- | ---- | -----------
@@ -51,7 +74,7 @@ expires_in | Integer | Time to Live of the issued token in miliseconds (Other ti
 4. Using the access token obtained in the previous step, The Platform will get the user's basic information from the Loyalty Program's API, below you will find an example cURL call and the minimum required information:
 
 ```bash
-curl -X POST -H "Authorization: Bearer ACCESS_TOKEN" "https://api.loyaltyprogram.com/me"
+curl -X POST -H "Authorization: Bearer $ACCESS_TOKEN" "https://api.loyaltyprogram.com/me"
 ```
 
 **Expected response**
@@ -89,9 +112,8 @@ Below is an example of the API call that The Platform will perform:
 ```bash
 curl -X POST \
   https://api.loyaltyprogram.com/redemptions \
-  -H 'Authorization: Bearer ACCESS_TOKEN' \
+  -H 'Authorization: Bearer $ACCESS_TOKEN' \
   -H 'Content-Type: application/json' \
-  -H 'cache-control: no-cache' \
   -d '{
         "member_id": "123ABC098",
         "total": "1000",
@@ -120,16 +142,64 @@ id | String | Id of the redemption
 
 ## Redemption Reversal
 
-The Platform may need to revert a redemption in two cases:
+The Platform may need to revert a redemption (partial refunds should be supported) in three cases:
 1. The user requests it. (Restrictions apply)
 2. The redemption is flagged as fraudulent.
+3. The digital merchant issued a refund to the user's eCard, due to guarantee claim, post-order issues, etc.
 
-In these cases, The Platform will call the redemption reversal API.
+In these cases, The Platform will perform the following steps:
+1. Obtain an access token through the `$CLIENT_CREDENTIALS`provided during the merchant setup.
+2. Call the redemption reveral API.
 
-Below is an example of the API call that The Platform will perform:
+Below is an example of the API call to obtain the access token with `grant_type=CLIENT_CREDENTIALS`
 
 ```bash
-curl -X DELETE -H "Authorization: Bearer ACCESS_TOKEN" "https://api.loyaltyprogram.com/redemptions/:id"
+curl -X POST \
+  https://api.loyaltyprogram.com/oauth/token \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"client_id": "$CLIENT_ID",
+	"client_secret": "$CLIENT_SECRET",
+	"grant_type": "CLIENT_CREDENTIALS",
+	"code": "$CLIENT_CREDENTIALS"
+}'
 ```
 
-The parameter `:id` is the ID returned by the redeem API call.
+Field | Type | Description
+----- | ---- | -----------
+client_id | String | The Platform's clientID (assigned by the loyalty program's platform)
+client_secret | String | The Platform's clientSecret (assigned by the loyalty program's platform)
+grant_type | Enum (AUTHORIZATION_CODE, CLIENT_CREDENTIALS) | Specifies the grant_type used to request authorization, in this case, CLIENT_CREDENTIALS will be sent.
+
+```bash
+curl -X DELETE -H "Authorization: Bearer $ACCESS_TOKEN" "https://api.loyaltyprogram.com/redemptions/:id?total=REWARDS_POINTS_REFUNDED"
+```
+
+Field | Type | Description
+----- | ---- | -----------
+id | String | Id of the redemption
+total | Integer | Total of reward points to credit to the user's account.
+
+
+Below is an example of the redemption refund API call that The Platform will perform:
+
+```bash
+curl -X DELETE -H "Authorization: Bearer ACCESS_TOKEN" "https://api.loyaltyprogram.com/redemptions/:id?total=REWARDS_POINTS_REFUNDED"
+```
+
+Field | Type | Description
+----- | ---- | -----------
+id | String | Id of the redemption
+total | Integer | Total of reward points to credit to the user's account.
+
+**Expected response**
+
+```json
+{
+    "id": "095240ff-d12a-4fd6-bc58-b16bac8e7bfd"
+}
+```
+
+Field | Type | Description
+----- | ---- | -----------
+id | String | Id of the redemption reversal operation, for reference purposes.
