@@ -235,10 +235,62 @@ IGInteractionMethod.config(clientId: “YOUR_CLIENT_ID”, clientKey: “YOUR_CL
 }
 ```
 
+Field | Type | Description
+----- | ---- | -----------
+clientId | String/required | Loyalty program's identify for SDK.
+clientKey | String/required | Loyalty program's secret key for SDK.
+logoImage | File/required | Loyalty program's logo.
+isSandbox | Boolean/required | Indicates if it should behave as test environment.
+
+### Android integration
+
+#### Import code
+1. Import iguama_sdk.aar into libs folder within your project, as shown in the figure below. Go to the project's Java Build Path and import iguama_sdk.aar under libs. Select Order and Export, and check iguama_sdk.aar.
+
+![Import iguama_sdk.aar into libs folder within your project](https://github.com/iguama/repository/blob/master/media/android-integration-figure-1.png)
+
+2. Add the following content to your project's main build.gradle to make the libs directory a dependent repository:
+
+```build.gradle
+allprojects {     
+    repositories {                
+        flatDir {             
+            dirs 'libs'         
+        }          
+    } 
+}
+```
+
+3. In the build.gradle file of your app module, add the iguama_sdk as a project dependency:
+
+```app/build.gradle
+dependencies {    
+  implementation (name: 'iguama_sdk', ext: 'aar') 
+}
+```
+
+#### Configuration
+
+Add the following snippet in your `AndroidManifest.xml` to config the SDK.
+
+```AndroidManifest.xml
+<meta-data
+  android:name="com.iguama.client_id"
+  android:value="${client_id}" />
+<meta-data
+  android:name="com.iguama.secret_key"
+  android:value="${secret_key}" />
+<meta-data
+  android:name="com.iguama.is_sandbox"
+  android:value="true" />
+<meta-data
+  android:name="com.iguama.logoImage"
+  android:resource="@mipmap/ic_logo" />
+```
 
 Field | Type | Description
 ----- | ---- | -----------
 clientId | String/required | Loyalty program's identify for SDK.
-clientKey | String/required | Loyalty program's key for SDK.
+clientKey | String/required | Loyalty program's secret key for SDK.
 logoImage | File/required | Loyalty program's logo.
 isSandbox | Boolean/required | Indicates if it should behave as test environment.
