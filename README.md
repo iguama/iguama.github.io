@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to Iguama's Redemption Platform (from now on referred to as "The Platform") documentation. Our platform allows your customers to redeem their reward points in the digital merchant of their choice, in order to achieve that, there are some API requirements that need to be provided by any loyalty program interested in integrating our platform.
+Welcome to Iguama's Redemption Platform (from now on referred to as "The Platform") documentation. Our platform allows your customers to redeem their reward points in the digital merchant of their choice, in order to achieve that, there are some API requirements that need to be provided by any loyalty program interested in integrating to our platform.
 
 ## Overall flow
 
@@ -203,3 +203,42 @@ total | Integer | Total of reward points to credit to the user's account.
 Field | Type | Description
 ----- | ---- | -----------
 id | String | Id of the redemption reversal operation, for reference purposes.
+
+## Platform integration
+
+There are two method available to integrate with our platform:
+1. Google Chrome Extension
+2. Mobile SDK (iOS & Android)
+
+The `1.` it's the default one and the Google Chrome Extension will be provided by iguama to the loyalty program.
+
+To integrate with our SDK, below we provide the instructions for each mobile OS.
+
+### iOS integration
+
+#### Import code
+
+1. Start XCode, drag the file IguamaRedemptionsSDK.framework into your App directory in the project navigator panel.
+2. Add the an `import` statement for iguama's binary framework at the of the file:
+
+```swift
+import IguamaRedemptionsSDK
+```
+
+#### Configuration
+Open `AppDelegate.swif` file, and edit the following three parameters:
+
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {        
+IGInteractionMethod.config(clientId: “YOUR_CLIENT_ID”, clientKey: “YOUR_CLIENT_KEY”, sdkLogoImage: sdkLogoImge, isSandbox: false)
+        return true
+}
+```
+
+
+Field | Type | Description
+----- | ---- | -----------
+clientId | String/required | Loyalty program's identify for SDK.
+clientKey | String/required | Loyalty program's key for SDK.
+logoImage | File/required | Loyalty program's logo.
+isSandbox | Boolean/required | Indicates if it should behave as test environment.
