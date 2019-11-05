@@ -247,7 +247,7 @@ isSandbox | Boolean/required | Indicates if it should behave as test environment
 #### Import code
 1. Import iguama_sdk.aar into libs folder within your project, as shown in the figure below. Go to the project's Java Build Path and import iguama_sdk.aar under libs. Select Order and Export, and check iguama_sdk.aar.
 
-![Import iguama_sdk.aar into libs folder within your project](https://github.com/iguama/repository/blob/master/media/android-integration-figure-1.png)
+![Import iguama_sdk.aar into libs folder within your project](https://github.com/iguama/iguama.github.io/blob/master/media/android-integration-figure-1.png)
 
 2. Add the following content to your project's main build.gradle to make the libs directory a dependent repository:
 
