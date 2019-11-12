@@ -10,6 +10,7 @@ The overall process is composed of three steps:
 * Authentication
 * Redemption
 * Redemption Reversal
+* Platform integration
 
 ## Authentication
 
@@ -214,83 +215,159 @@ The `1.` it's the default one and the Google Chrome Extension will be provided b
 
 To integrate with our SDK, below we provide the instructions for each mobile OS.
 
-### iOS integration
+## Platform integration
 
-#### Import code
+There are two method available to integrate with our platform:
+1. Google Chrome Extension
+2. Mobile SDK (iOS & Android)
 
-1. Start XCode, drag the file IguamaRedemptionsSDK.framework into your App directory in the project navigator panel.
-2. Add the an `import` statement for iguama's binary framework at the of the file:
+The `1.` it's the default one and the Google Chrome Extension will be provided by iguama to the loyalty program.
 
-```swift
-import IguamaRedemptionsSDK
+To integrate with our SDK, below we provide the instructions for each mobile OS.
+
+### iOS Integration
+
+* import code
+
+Step 1: 
+
+Start the IDE such as Xcode, copy the files in the file into the folder and import them into the project.
+
+Step 2:
+
+ Add import to where IGWebSiteSDK is required
+```bash
+ #import IguamaRedemptionsSDK;
 ```
-
-#### Configuration
-Open `AppDelegate.swif` file, and edit the following three parameters:
-
-```swift
-func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {        
-IGInteractionMethod.config(clientId: “YOUR_CLIENT_ID”, clientKey: “YOUR_CLIENT_KEY”, sdkLogoImage: sdkLogoImge, isSandbox: false)
-        return true
-}
+* Configuration
+ 
+Open "AppDelegate.swif" file, and edit the following three parameters:
+    
+```bash
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {        
+             // clientId、clientKey、sdkLogoImage、isSandbox
+     IGInteractionMethod.config(clientId: "IOS_LATAMPASS_ID", clientKey: "IOS_LATAMPASS_KEY", sdkLogoImage: sdkLogoImge, isSandbox: false)
+             return true
+     }
 ```
-
-Field | Type | Description
+Parameters | Type/Required | Description
 ----- | ---- | -----------
-clientId | String/required | Loyalty program's identify for SDK.
-clientKey | String/required | Loyalty program's secret key for SDK.
-logoImage | File/required | Loyalty program's logo.
-isSandbox | Boolean/required | Indicates if it should behave as test environment.
-
-### Android integration
-
-#### Import code
-1. Import iguama_sdk.aar into libs folder within your project, as shown in the figure below. Go to the project's Java Build Path and import iguama_sdk.aar under libs. Select Order and Export, and check iguama_sdk.aar.
-
-![Import iguama_sdk.aar into libs folder within your project](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/android-integration-figure-1.png)
-
-2. Add the following content to your project's main build.gradle to make the libs directory a dependent repository:
-
-```build.gradle
-allprojects {     
-    repositories {                
-        flatDir {             
-            dirs 'libs'         
-        }          
-    } 
-}
+clientId | string/required | Loyal program’s identity Id for SDK.
+clientKey | string/required |  Loyal program’s secret key  for SDK
+sdkLogoImage | file/required | logo icon.
+isSandbox | string/required | True is for sandbox test, false is for prod evn.
+ 
+* User Authorization
+  
+a. Authorize user from app
+```bash
+  let interactionMethod = IGInteractionMethod(member_id: member_id, first_name: first_name, last_name: last_name, email: email, balance: balance, access_token: access_token)
+  interactionMethod.login()
 ```
 
-3. In the build.gradle file of your app module, add the iguama_sdk as a project dependency:
-
-```app/build.gradle
-dependencies {    
-  implementation (name: 'iguama_sdk', ext: 'aar') 
-}
+b. Authorize user from website
+```bash
+  let interactionMethod = IGInteractionMethod()
+  interactionMethod.login()
 ```
-
-#### Configuration
-
-Add the following snippet in your `AndroidManifest.xml` to config the SDK.
-
-```AndroidManifest.xml
-<meta-data
-  android:name="com.iguama.client_id"
-  android:value="${client_id}" />
-<meta-data
-  android:name="com.iguama.secret_key"
-  android:value="${secret_key}" />
-<meta-data
-  android:name="com.iguama.is_sandbox"
-  android:value="true" />
-<meta-data
-  android:name="com.iguama.logoImage"
-  android:resource="@mipmap/ic_logo" />
-```
-
-Field | Type | Description
+Parameters | Type/Required | Description
 ----- | ---- | -----------
-clientId | String/required | Loyalty program's identify for SDK.
-clientKey | String/required | Loyalty program's secret key for SDK.
-logoImage | File/required | Loyalty program's logo.
-isSandbox | Boolean/required | Indicates if it should behave as test environment.
+member_id | string/required | User's member id.
+first_name | string/required | User's first name.
+last_name | string/optional | User's last name.
+email | string/optional | User's email.
+balance | int/required | User's available balance.
+access_token | string/required | Access token need to be verified when redeem. 
+
+
+### Android Integration
+  
+* import code
+  
+Step 1: 
+  
+import com-iguama-redemptions.aar into libs folder in the merchant project, as shown in the figure below. Go to the project's Java Build Path and import com-iguama-redemptions.aar under libs. Select Order and Export, and check com-iguama-redemptions.aar.
+  
+![Import com-iguama-redemptions.aar into libs folder within your project](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/android-integration-figure-2.png)
+  
+Step 2:
+  
+In he build.gradle of your main project, add the following content to make the libs directory a dependent repository:
+```bash
+   allprojects {     
+                  repositories {                
+                      flatDir {             
+                          dirs 'libs'         
+                      }          
+                   } 
+              }
+```
+   
+Step 3:
+In the build.gradle of your App Module, add the following to the com.iguama.redemptions SDK as a project dependency:
+   
+```bash
+      dependencies {    
+                      compile (name: 'com.iguama.redemptions', ext: 'aar') 
+      }
+```
+   
+* Configuration
+
+Add the following declaration into file AndroidManifest.xml in the project:
+    
+ ```bash
+       <meta-data
+           android:name="com.iguama.client_id"
+           android:value="${client_id}" />
+       <meta-data
+           android:name="com.iguama.secret_key"
+           android:value="${secret_key}" />
+       <meta-data
+           android:name="com.iguama.is_qa"
+           android:value="true" />
+       <meta-data
+           android:name="com.iguama.icon"
+           android:resource="@mipmap/ic_logo" />
+```
+
+Parameters | Type/Required | Description
+----- | ---- | -----------
+com.iguama.client_id | string/required | Loyal program’s identity Id for SDK.
+com.iguama.secret_key | string/required |  Loyal program’s secret key  for SDK
+com.iguama.icon | file/required | logo icon.
+com.iguama.is_qa | string/required | True is for sandbox test, false is for prod evn.
+   
+  
+* User Authorization
+    
+a. Authorize user from app
+  
+ ```bash
+     IguamaSDK iguamaSDK = new IguamaSDK.Builder(getApplication())
+                    .userId("userId")
+                    .firstName("firstName")
+                    .lastName("lastName")
+                    .email("email")
+                    .balance(10000)
+                    .accessToken("xxxxxx")
+                    .build();
+                    
+           iguamaSDK.launch();
+ ```
+  
+  b. Authorize user from website
+```bash
+    IguamaSDK iguamaSDK = new IguamaSDK.Builder(getApplication()).build();
+                        
+               iguamaSDK.launch();
+ ```
+  
+Parameters | Type/Required | Description
+----- | ---- | -----------
+userId | string/required | User's member id.
+firstName | string/required | User's first name.
+lastName | string/optional | User's last name.
+email | string/optional | User's email.
+balance | int/required | User's available balance.
+accessToken | string/required | Access token need to be verified when redeem. 
