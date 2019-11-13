@@ -172,16 +172,6 @@ client_id | String | The Platform's clientID (assigned by the loyalty program's 
 client_secret | String | The Platform's clientSecret (assigned by the loyalty program's platform)
 grant_type | Enum (AUTHORIZATION_CODE, CLIENT_CREDENTIALS) | Specifies the grant_type used to request authorization, in this case, CLIENT_CREDENTIALS will be sent.
 
-```bash
-curl -X DELETE -H "Authorization: Bearer $ACCESS_TOKEN" "https://api.loyaltyprogram.com/redemptions/:id?total=REWARDS_POINTS_REFUNDED"
-```
-
-Field | Type | Description
------ | ---- | -----------
-id | String | Id of the redemption
-total | Integer | Total of reward points to credit to the user's account.
-
-
 Below is an example of the redemption refund API call that The Platform will perform:
 
 ```bash
