@@ -215,16 +215,6 @@ The `1.` it's the default one and the Google Chrome Extension will be provided b
 
 To integrate with our SDK, below we provide the instructions for each mobile OS.
 
-## Platform integration
-
-There are two method available to integrate with our platform:
-1. Google Chrome Extension
-2. Mobile SDK (iOS & Android)
-
-The `1.` it's the default one and the Google Chrome Extension will be provided by iguama to the loyalty program.
-
-To integrate with our SDK, below we provide the instructions for each mobile OS.
-
 ### iOS Integration
 
 * import code
