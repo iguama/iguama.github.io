@@ -335,6 +335,16 @@ a. Authorize user from app
                     
            iguamaSDK.launch();
  ```
+ 
+Parameters | Type/Required | Description
+----- | ---- | -----------
+userId | string/required | User's member id.
+firstName | string/required | User's first name.
+lastName | string/optional | User's last name.
+email | string/required | User's email.
+balance | int/required | User's available balance.
+accessToken | string/required | Access token need to be verified when redeem. 
+
   
   b. Authorize user from website
 ```bash
@@ -342,12 +352,3 @@ a. Authorize user from app
                         
                iguamaSDK.launch();
  ```
-  
-Parameters | Type/Required | Description
------ | ---- | -----------
-userId | string/required | User's member id.
-firstName | string/required | User's first name.
-lastName | string/optional | User's last name.
-email | string/optional | User's email.
-balance | int/required | User's available balance.
-accessToken | string/required | Access token need to be verified when redeem. 
