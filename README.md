@@ -211,7 +211,8 @@ To integrate with our SDK, below we provide the instructions for each mobile OS.
 
 Step 1: 
 
-Start the IDE such as Xcode, copy the files in the file into the folder and import them into the project.
+Start the IDE such as Xcode, import IguamaRedemptionsSDK.framework into folder Build Phases, set Destination with Frameworks option.
+![import IguamaRedemptionsSDK.framework](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/ios-integration-figure-1.png)
 
 Step 2:
 
@@ -243,13 +244,19 @@ a. Authorize user from app
 ```bash
   let interactionMethod = IGInteractionMethod(member_id: member_id, first_name: first_name, last_name: last_name, email: email, balance: balance, access_token: access_token)
   interactionMethod.login()
+  
+  interactionMethod.refreshToken = { (oldToken:String,blockToken:(_ newToken:String) -> Void) in
+            // get fresh token by call blockToken(), if failed to refresh token newToken is empty,
+                  blockToken(newToken)
+         }
+  
 ```
-
 b. Authorize user from website
 ```bash
   let interactionMethod = IGInteractionMethod()
   interactionMethod.login()
 ```
+
 Parameters | Type/Required | Description
 ----- | ---- | -----------
 member_id | string/required | User's member id.
