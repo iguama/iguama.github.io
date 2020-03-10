@@ -256,22 +256,23 @@ open your-project.xcworkspace
 Step 1:
 Go to the folder where the project is located through the terminal：
 ```bash
-cd your project
+cd your-project-directory
 
+```
 
 Step 2:
-Open cartfile file with xcode：
+Create a Cartfile that lists the frameworks you’d like to use in your project.
 open -a Xcode Cartfile
 
 Step 3:
 
 Add framework address in cartfile：
 ```bash 
-github "xxx/IguamaSDK"
+github "gaborage/IguamaSDK"
 ```
 
 （Address of the project on github，
-such as https://github.com/XXX/IguamaSDK）
+such as https://github.com/gaborage/IguamaSDK）
 
 Step 4:
 Save and close the cart file and execute the command in the terminal：
@@ -288,9 +289,16 @@ open your project, click on project, select target, then select General above, a
 
 
 Step 6:
+
 Click on the Build Phrase tab and add the corresponding run script, Add the framework path ( $ (SRCROOT) /Carthage/Build/iOS/IguamaSDK.framework ):
 ![import IguamaSDK.framework](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/ios-integration-carthage-6.png)
 
+
+Step 7:
+
+Click on the Build Phrase tab and add the corresponding copy files，
+Add IguamaSDK.framework：
+![import IguamaSDK.framework](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/ios-integration-carthage-7.png)
 
 * Configuration
  
