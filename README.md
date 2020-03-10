@@ -207,19 +207,91 @@ To integrate with our SDK, below we provide the instructions for each mobile OS.
 
 ### iOS Integration
 
-* import code
+* Add IguamaSDK to your app manually
 
 Step 1: 
 
-Start the IDE such as Xcode, import IguamaRedemptionsSDK.framework into folder Build Phases, set Destination with Frameworks option.
-![import IguamaRedemptionsSDK.framework](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/ios-integration-figure-1.png)
+Start the IDE such as Xcode, import IguamaSDK.framework into folder Build Phases, set Destination with Frameworks option.
+![import IguamaSDK.framework](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/ios-integration-figure-1.png)
 
 Step 2:
 
  Add import to where IGWebSiteSDK is required
 ```bash
- #import IguamaRedemptionsSDK;
+ #import IguamaSDK;
 ```
+
+* Add IguamaSDK to your app using CocoaPods
+
+Step 1: 
+
+Create a Podfile if you don't already have one:
+
+```bash
+cd your-project-directory
+
+pod init
+```
+
+Step 2:
+
+To your Podfile, add the iguamaSDK pods that you want to use in your app.
+
+```bash
+  pod 'IguamaSDK'
+```
+
+Step 3:
+Install the pods, then open your .xcworkspace file to see the project in Xcode:
+
+
+```bash
+pod install
+
+open your-project.xcworkspace
+```
+
+* Add IguamaSDK to your app using Carthage
+
+Step 1:
+Go to the folder where the project is located through the terminal：
+```bash
+cd your project
+
+
+Step 2:
+Open cartfile file with xcode：
+open -a Xcode Cartfile
+
+Step 3:
+
+Add framework address in cartfile：
+```bash 
+github "xxx/IguamaSDK"
+```
+
+（Address of the project on github，
+such as https://github.com/XXX/IguamaSDK）
+
+Step 4:
+Save and close the cart file and execute the command in the terminal：
+
+```bash
+carthage update --platform iOS
+```
+
+Step 5:
+
+At this time, the Carthage folder in the project has added IguamaSDK.framework.
+open your project, click on project, select target, then select General above, and 	drag the required framework files to Linked frameworks and Binaries：
+![import IguamaSDK.framework](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/ios-integration-carthage-5.png)
+
+
+Step 6:
+Click on the Build Phrase tab and add the corresponding run script, Add the framework path ( $ (SRCROOT) /Carthage/Build/iOS/IguamaSDK.framework ):
+![import IguamaSDK.framework](https://raw.githubusercontent.com/iguama/iguama.github.io/master/media/ios-integration-carthage-6.png)
+
+
 * Configuration
  
 Open "AppDelegate.swif" file, and edit the following three parameters:
