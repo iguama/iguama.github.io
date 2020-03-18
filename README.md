@@ -268,11 +268,11 @@ Step 3:
 
 Add framework address in cartfile：
 ```bash 
-github "gaborage/IguamaSDK"
+github "iguama/IguamaSDK"
 ```
 
 （Address of the project on github，
-such as https://github.com/gaborage/IguamaSDK）
+such as https://github.com/iguama/iguama-ios-sdk）
 
 Step 4:
 Save and close the cart file and execute the command in the terminal：
@@ -307,7 +307,7 @@ Open "AppDelegate.swif" file, and edit the following three parameters:
 ```bash
      func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {        
              // clientId、clientKey、sdkLogoImage、isSandbox
-     IGInteractionMethod.config(clientId: "IOS_LATAMPASS_ID", clientKey: "IOS_LATAMPASS_KEY", sdkLogoImage: sdkLogoImge, isSandbox: false)
+     IguamaSDK.config(clientId: "YOUR_CLIENT_ID", clientKey: "YOUR_CLIENT_KEY", sdkLogoImage: sdkLogoImge, isSandbox: false)
              return true
      }
 ```
@@ -319,33 +319,40 @@ sdkLogoImage | file/required | logo icon.
 isSandbox | string/required | True is for sandbox test, false is for prod evn.
  
 * User Authorization
-  
-a. Authorize user from app
+
+a. Authorize using Client Credentials 
 ```bash
-  let interactionMethod = IGInteractionMethod(member_id: member_id, first_name: first_name, last_name: last_name, email: email, balance: balance, access_token: access_token)
-  interactionMethod.login()
-  
-  interactionMethod.refreshToken = { (oldToken:String,blockToken:(_ newToken:String) -> Void) in
-            // get fresh token by call blockToken(), if failed to refresh token newToken is empty,
-                  blockToken(newToken)
-         }
-  
-```
-b. Authorize user from website
-```bash
-  let interactionMethod = IGInteractionMethod()
-  interactionMethod.login()
+  let iguamaSDK = IguamaSDK()
+  iguamaSDK.useClientCredentials()
+  iguamaSDK.login(member_id: memberId)
 ```
 
 Parameters | Type/Required | Description
 ----- | ---- | -----------
 member_id | string/required | User's member id.
-first_name | string/required | User's first name.
-last_name | string/optional | User's last name.
-email | string/optional | User's email.
-balance | int/required | User's available balance.
-access_token | string/required | Access token need to be verified when redeem. 
 
+b. Authorize using Grant Code (OAuth flow)
+```bash
+  let iguamaSDK = IguamaSDK()
+  iguamaSDK.useGrantCode(grant_code: grantCode)
+  iguamaSDK.login(member_id: memberId)
+  
+  interactionMethod.refreshToken = { (oldToken:String, obtainToken:(_ newToken:String) -> Void) in
+            // get fresh token by call obtainToken(), if failed to refresh token newToken is empty,
+                  obtainToken(newToken)
+         }
+```
+
+Parameters | Type/Required | Description
+----- | ---- | -----------
+grant_code | string/required | Grant Code that our platform will use to get the appropriate access token to perform actions on member's behalf.
+member_id | string/required | User's member id.
+
+c. Authorize user using website integration
+```bash
+  let iguamaSDK = IguamaSDK()
+  iguamaSDK.login()
+``` 
 
 ### Android Integration
   
@@ -371,11 +378,11 @@ In he build.gradle of your main project, add the following content to make the l
 ```
    
 Step 3:
-In the build.gradle of your App Module, add the following to the com.iguama.redemptions SDK as a project dependency:
+In the build.gradle of your App Module, add the following to the com.iguama.sdk SDK as a project dependency:
    
 ```bash
       dependencies {    
-                      compile (name: 'com.iguama.redemptions', ext: 'aar') 
+                      compile (name: 'com.iguama.sdk', ext: 'aar') 
       }
 ```
    
@@ -403,39 +410,46 @@ Parameters | Type/Required | Description
 com.iguama.client_id | string/required | Loyal program’s identity Id for SDK.
 com.iguama.secret_key | string/required |  Loyal program’s secret key  for SDK
 com.iguama.icon | file/required | logo icon.
-com.iguama.is_qa | string/required | True is for sandbox test, false is for prod evn.
+com.iguama.is_qa | string/required | True is for sandbox test, false is for prod env.
    
   
 * User Authorization
     
-a. Authorize user from app
+a. Authorize using Client Credentials
   
  ```bash
-     IguamaSDK iguamaSDK = new IguamaSDK.Builder(getApplication())
-                    .userId("userId")
-                    .firstName("firstName")
-                    .lastName("lastName")
-                    .email("email")
-                    .balance(10000)
-                    .accessToken("xxxxxx")
-                    .build();
+    IguamaSDK iguamaSDK = new IguamaSDK.Builder(getApplication())
+        .withClientCredentials()
+        .memberId("yxz")
+        .build();
                     
-           iguamaSDK.launch();
+    iguamaSDK.launch();
  ```
- 
+
+
 Parameters | Type/Required | Description
 ----- | ---- | -----------
-userId | string/required | User's member id.
-firstName | string/required | User's first name.
-lastName | string/optional | User's last name.
-email | string/required | User's email.
-balance | int/required | User's available balance.
-accessToken | string/required | Access token need to be verified when redeem. 
+member_id | string/required | User's member id.
 
+b. Authorize using Grant Code (Oauth flow)
   
-  b. Authorize user from website
+ ```bash
+    IguamaSDK iguamaSDK = new IguamaSDK.Builder(getApplication())
+        .withGrantCode("xxxxx")
+        .memberId("yxz")
+        .build();
+                    
+    iguamaSDK.launch();
+ ```
+
+Parameters | Type/Required | Description
+----- | ---- | -----------
+grant_code | string/required | Grant Code that our platform will use to get the appropriate access token to perform actions on member's behalf.
+member_id | string/required | User's member id.
+  
+c. Authorize user from website
 ```bash
     IguamaSDK iguamaSDK = new IguamaSDK.Builder(getApplication()).build();
                         
-               iguamaSDK.launch();
+    iguamaSDK.launch();
  ```
