@@ -337,7 +337,7 @@ b. Authorize using Grant Code (OAuth flow)
   iguamaSDK.useGrantCode(grant_code: grantCode)
   iguamaSDK.login(member_id: memberId)
   
-  interactionMethod.refreshToken = { (oldToken:String, obtainToken:(_ newToken:String) -> Void) in
+  iguamaSDK.refreshToken = { (oldToken:String, obtainToken:(_ newToken:String) -> Void) in
             // get fresh token by call obtainToken(), if failed to refresh token newToken is empty,
                   obtainToken(newToken)
          }
