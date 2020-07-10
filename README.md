@@ -128,7 +128,7 @@ Field | Type | Description
 member_id | String | User's id within the loyalty program's platform
 total | Integer | Total amount of reward points to redeem.
 description | String | Redemption's description.
-transaction | String | Our transaction id for reference.
+transaction_id | String | Our transaction id for reference.
 
 **Expected response**
 ```json
